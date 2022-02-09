@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import cart from '../icons/cart.svg';
+import CategoryList from './CategoryList';
 
 class Search extends Component {
   render() {
@@ -15,6 +16,9 @@ class Search extends Component {
         >
           <img src={ cart } alt="Cart Icon" />
         </Link>
+        <aside>
+          <CategoryList />
+        </aside>
       </div>
     );
   }
