@@ -29,6 +29,7 @@ class CategoryList extends Component {
                 data-testid="category"
                 type="button"
               >
+
                 {name}
               </button>
             </li>
