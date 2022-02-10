@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import cart from '../icons/cart.svg';
-import CategoryList from './CategoryList';
 
-class Search extends Component {
+class InitialMessage extends Component {
   render() {
     return (
       <div>
+        <label htmlFor="search">
+          <input
+            type="text"
+            placeholder="O que você procura?"
+            name="search"
+            id="search"
+          />
+        </label>
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
@@ -16,12 +23,9 @@ class Search extends Component {
         >
           <img src={ cart } alt="Cart Icon" />
         </Link>
-        <aside>
-          <CategoryList />
-        </aside>
       </div>
     );
   }
 }
 
-export default Search;
+export default InitialMessage;
