@@ -8,7 +8,7 @@ class Products extends React.Component {
     return (
       <div>
         {list.map(({ price, title, thumbnail, id }) => (
-          <Card title={ title } price={ price } url={ thumbnail } key={ id } />
+          <Card title={ title } price={ price } url={ thumbnail } key={ id } id={ id } />
         ))}
       </div>
     );
