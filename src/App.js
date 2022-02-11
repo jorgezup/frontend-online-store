@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { getSpecificItem } from './services/api';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import DetailsProducts from './pages/DetailsProducts';
 
 class App extends React.Component {
   state = {
@@ -27,6 +28,10 @@ class App extends React.Component {
             render={ () => <Home handleButtonAddCart={ this.handleButtonAddCart } /> }
           />
           <Route exact path="/cart" render={ () => <Cart productList={ cartList } /> } />
+          <Route
+            path="/details/:id"
+            render={ (props) => <DetailsProducts { ...props } /> }
+          />
         </Switch>
       </BrowserRouter>
     );
