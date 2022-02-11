@@ -4,7 +4,6 @@ import { getProductsFromCategoryAndQuery, getSpecificCategory } from '../service
 import CategoryList from '../components/CategoryList';
 import Search from '../components/Search';
 import Products from '../components/Products';
-import Cart from './Cart';
 
 class Home extends Component {
   state = {
