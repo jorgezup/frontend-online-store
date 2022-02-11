@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getProductsFromCategoryAndQuery, getSpecificCategory } from '../services/api';
 import CategoryList from '../components/CategoryList';
 import Search from '../components/Search';
 import Products from '../components/Products';
+import Cart from './Cart';
 
 class Home extends Component {
   state = {
@@ -31,6 +33,7 @@ class Home extends Component {
 
   render() {
     const { inputSearch, list } = this.state;
+    const { handleButtonAddCart } = this.props;
     return (
       <main>
         <Search
@@ -41,10 +44,14 @@ class Home extends Component {
         <CategoryList
           handleButton={ this.handleButtonCategory }
         />
-        <Products list={ list } />
+        <Products handleButton={ handleButtonAddCart } list={ list } />
       </main>
     );
   }
 }
+
+Home.propTypes = {
+  handleButtonAddCart: PropTypes.func.isRequired,
+};
 
 export default Home;

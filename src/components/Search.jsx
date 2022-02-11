@@ -25,7 +25,6 @@ class Search extends Component {
           data-testid="query-button"
         >
           Pesquisar
-
         </button>
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
