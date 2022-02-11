@@ -4,11 +4,18 @@ import Card from './Card';
 
 class Products extends React.Component {
   render() {
-    const { list } = this.props;
+    const { list, handleButton } = this.props;
     return (
       <div>
         {list.map(({ price, title, thumbnail, id }) => (
-          <Card title={ title } price={ price } url={ thumbnail } key={ id } id={ id } />
+          <Card
+            handleButton={ handleButton }
+            title={ title }
+            price={ price }
+            url={ thumbnail }
+            key={ id }
+            id={ id }
+          />
         ))}
       </div>
     );
@@ -17,6 +24,7 @@ class Products extends React.Component {
 
 Products.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleButton: PropTypes.func.isRequired,
 };
 
 export default Products;

@@ -13,3 +13,9 @@ export async function getSpecificCategory(categoryId) {
   const data = await result.json();
   return data;
 }
+
+export async function getSpecificItem(productId) {
+  const result = await fetch(`https://api.mercadolibre.com/items/${productId}`);
+  const data = await result.json();
+  return data;
+}
