@@ -1,5 +1,4 @@
 import React from 'react';
-// import Card from '../components/Card';
 import PropTypes from 'prop-types';
 
 class DetailsProducts extends React.Component {
@@ -15,10 +14,8 @@ class DetailsProducts extends React.Component {
     }
 
     render() {
-      // const { match: { params: { id } } } = this.props;
       const { data } = this.state;
       const { attributes } = data;
-      console.log(data);
       return (
         <section data-testid="product-detail-name">
           <div>
@@ -40,9 +37,12 @@ class DetailsProducts extends React.Component {
     }
 }
 
-// Resolver problema da PropType
 DetailsProducts.propTypes = {
-  match: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default DetailsProducts;
