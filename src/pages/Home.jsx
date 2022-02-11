@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery, getSpecificCategory } from '../services/api';
 import CategoryList from '../components/CategoryList';
 import Search from '../components/Search';
 import Products from '../components/Products';
@@ -24,6 +24,11 @@ class Home extends Component {
     this.fetchAPI(inputSearch);
   }
 
+  handleButtonCategory = async ({ target: { id } }) => {
+    const { results } = await getSpecificCategory(id);
+    this.setState({ list: results });
+  }
+
   render() {
     const { inputSearch, list } = this.state;
     return (
@@ -33,7 +38,9 @@ class Home extends Component {
           inputChange={ this.inputChange }
           handlerButton={ this.handlerButton }
         />
-        <CategoryList />
+        <CategoryList
+          handleButton={ this.handleButtonCategory }
+        />
         <Products list={ list } />
       </main>
     );

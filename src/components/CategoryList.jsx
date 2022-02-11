@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getCategories } from '../services/api';
 
 class CategoryList extends Component {
@@ -19,6 +20,7 @@ class CategoryList extends Component {
 
   render() {
     const { categories } = this.state;
+    const { handleButton } = this.props;
     return (
       <div>
         <ul>
@@ -28,6 +30,8 @@ class CategoryList extends Component {
               <button
                 data-testid="category"
                 type="button"
+                id={ id }
+                onClick={ handleButton }
               >
                 {name}
               </button>
@@ -38,5 +42,9 @@ class CategoryList extends Component {
     );
   }
 }
+
+CategoryList.propTypes = {
+  handleButton: PropTypes.func.isRequired,
+};
 
 export default CategoryList;
