@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
@@ -9,6 +9,10 @@ import Checkout from './pages/Checkout';
 class App extends React.Component {
   state = {
     cartList: [],
+    productReview: [],
+    email: '',
+    rate: '',
+    review: '',
   }
 
   handleButtonAddCart = async (product) => {
@@ -69,43 +73,89 @@ class App extends React.Component {
       totalPrice: 0,
     })
 
-  render() {
-    const { cartList } = this.state;
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={ () => <Home handleButtonAddCart={ this.handleButtonAddCart } /> }
-          />
-          <Route
-            exact
-            path="/cart"
-            render={ () => (<Cart
-              productList={ cartList }
-              handleAddProduct={ this.addProductToList }
-              handleRemoveProduct={ this.removeProductFromCart }
-            />) }
-          />
-          <Route
-            path="/details/:id"
-            render={ (props) => (<DetailsProducts
-              handleButtonAddCart={ this.handleButtonAddCart }
-              { ...props }
-            />) }
-          />
-          <Route
-            path="/checkout"
-            render={ () => (<Checkout
-              productList={ cartList }
-              totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
-            />) }
-          />
-        </Switch>
-      </BrowserRouter>
-    );
-  }
+  /* Funções para o Details Product */
+
+    handleChange = ({ target }) => {
+      const value = (target.type === 'checkbox') ? target.checked : target.value;
+      this.setState({
+        [target.name]: value,
+      });
+    }
+
+    handleSubmitReview = (product) => {
+      const { productReview, email, rate, review } = this.state;
+      console.log(productReview, email, rate, review, product);
+
+      const newReview = {
+        email,
+        rate,
+        review,
+        productId: product.id,
+      };
+
+      console.log(newReview);
+
+      this.setState({
+        productReview: [...productReview, newReview],
+      });
+
+      this.resetForm();
+
+      return <Redirect to="/" />;
+    }
+
+    resetForm = () => {
+      this.setState({
+        email: '',
+        rate: '',
+        review: '',
+      });
+    }
+
+    render() {
+      const { cartList, email, rate, review, productReview } = this.state;
+      console.log(productReview);
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={ () => <Home handleButtonAddCart={ this.handleButtonAddCart } /> }
+            />
+            <Route
+              exact
+              path="/cart"
+              render={ () => (<Cart
+                productList={ cartList }
+                handleAddProduct={ this.addProductToList }
+                handleRemoveProduct={ this.removeProductFromCart }
+              />) }
+            />
+            <Route
+              path="/details/:id"
+              render={ (props) => (<DetailsProducts
+                handleButtonAddCart={ this.handleButtonAddCart }
+                email={ email }
+                rate={ rate }
+                review={ review }
+                handleSubmitReview={ this.handleSubmitReview }
+                handleChange={ this.handleChange }
+                productReview={ productReview }
+                { ...props }
+              />) }
+            />
+            <Route
+              path="/checkout"
+              render={ () => (<Checkout
+                productList={ cartList }
+                totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
+              />) }
+            />
+          </Switch>
+        </BrowserRouter>
+      );
+    }
 }
 
 export default App;
