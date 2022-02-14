@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import remove from '../icons/minus.png';
 import add from '../icons/plus.png';
 import del from '../icons/delete.png';
@@ -41,6 +42,14 @@ class Cart extends Component {
             </div>
           )) : <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
         }
+        { productList.length > 0
+          && (
+            <Link to="/checkout">
+              <button type="button" data-testid="checkout-products">
+                Finalizar a compra
+              </button>
+            </Link>
+          )}
       </div>
     );
   }

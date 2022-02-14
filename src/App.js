@@ -5,6 +5,7 @@ import { getSpecificItem } from './services/api';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
+import Checkout from './pages/Checkout';
 
 class App extends React.Component {
   state = {
@@ -93,6 +94,10 @@ class App extends React.Component {
               addCar={ this.handleButtonAddCart }
               { ...props }
             />) }
+          />
+          <Route
+            path="/checkout"
+            render={ () => (<Checkout productList={ cartList } />) }
           />
         </Switch>
       </BrowserRouter>
