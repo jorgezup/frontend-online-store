@@ -9,25 +9,35 @@ import Checkout from './pages/Checkout';
 class App extends React.Component {
   state = {
     cartList: [],
+    cartSize: 0,
+  }
+
+  componentDidMount() {
+    const teste = JSON.parse(localStorage.getItem('amount'));
+    if (!teste) {
+      localStorage.setItem('amount', JSON.stringify(0));
+    }
+    const cartSize = JSON.parse(localStorage.getItem('amount'));
+    this.setState({ cartSize });
   }
 
   handleButtonAddCart = async (product) => {
     const { cartList } = this.state;
-
     const productExists = cartList.find((productItem) => productItem.id === product.id);
-
     if (productExists) {
       this.addProductToList(product);
       return;
     }
-
     const newProduct = {
       ...product,
       amount: 1,
     };
-
+    const prevSize = JSON.parse(localStorage.getItem('amount'));
+    localStorage.setItem('amount', JSON.stringify(prevSize + 1));
+    const size = JSON.parse(localStorage.getItem('amount'));
     this.setState({
       cartList: [...cartList, newProduct],
+      cartSize: size,
     });
   }
 
@@ -70,14 +80,17 @@ class App extends React.Component {
     })
 
   render() {
-    const { cartList } = this.state;
+    const { cartList, cartSize } = this.state;
     return (
       <BrowserRouter>
         <Switch>
           <Route
             exact
             path="/"
-            render={ () => <Home handleButtonAddCart={ this.handleButtonAddCart } /> }
+            render={ () => (<Home
+              cartSize={ cartSize }
+              handleButtonAddCart={ this.handleButtonAddCart }
+            />) }
           />
           <Route
             exact
@@ -91,7 +104,9 @@ class App extends React.Component {
           <Route
             path="/details/:id"
             render={ (props) => (<DetailsProducts
+              cartSize={ cartSize }
               handleButtonAddCart={ this.handleButtonAddCart }
+              cartList={ cartList }
               { ...props }
             />) }
           />

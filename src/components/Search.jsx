@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import cart from '../icons/cart.svg';
+import CartIcon from './CartIcon';
 
 class Search extends Component {
   render() {
-    const { inputSearch, inputChange, handlerButton } = this.props;
+    const { inputSearch, inputChange, handlerButton, cartSize } = this.props;
     return (
       <div>
         <label htmlFor="search">
@@ -29,12 +28,7 @@ class Search extends Component {
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
-        <Link
-          data-testid="shopping-cart-button"
-          to="/cart"
-        >
-          <img src={ cart } alt="Cart Icon" />
-        </Link>
+        <CartIcon cartSize={ cartSize } />
       </div>
     );
   }
@@ -44,6 +38,7 @@ Search.propTypes = {
   inputSearch: PropTypes.string.isRequired,
   inputChange: PropTypes.func.isRequired,
   handlerButton: PropTypes.func.isRequired,
+  cartSize: PropTypes.number.isRequired,
 };
 
 export default Search;
