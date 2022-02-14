@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import cart from '../icons/cart.svg';
 import { getSpecificItem } from '../services/api';
+import CartIcon from '../components/CartIcon';
 
 class DetailsProducts extends React.Component {
     state = {
@@ -15,6 +14,11 @@ class DetailsProducts extends React.Component {
       this.setState({ product });
     }
 
+    getSize = () => {
+      const size = JSON.parse(localStorage.getItem('amount'));
+      return size;
+    }
+
     render() {
       const { handleButtonAddCart } = this.props;
       const { product } = this.state;
@@ -22,12 +26,7 @@ class DetailsProducts extends React.Component {
       return (
         <section data-testid="product-detail-name">
           <div>
-            <Link
-              data-testid="shopping-cart-button"
-              to="/cart"
-            >
-              <img src={ cart } alt="Cart Icon" />
-            </Link>
+            <CartIcon cartSize={ this.getSize() } />
           </div>
           <div>
             <h2>{ title }</h2>

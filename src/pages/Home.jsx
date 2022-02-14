@@ -32,10 +32,11 @@ class Home extends Component {
 
   render() {
     const { inputSearch, list } = this.state;
-    const { handleButtonAddCart } = this.props;
+    const { handleButtonAddCart, cartSize } = this.props;
     return (
       <main>
         <Search
+          cartSize={ cartSize }
           inputSearch={ inputSearch }
           inputChange={ this.inputChange }
           handlerButton={ this.handlerButton }
@@ -51,6 +52,7 @@ class Home extends Component {
 
 Home.propTypes = {
   handleButtonAddCart: PropTypes.func.isRequired,
+  cartSize: PropTypes.number.isRequired,
 };
 
 export default Home;
