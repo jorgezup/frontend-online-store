@@ -17,6 +17,14 @@ class App extends React.Component {
     this.setState({ cartList: [...cartList, result] });
   }
 
+  addCar = async ({ target: { id } }) => {
+    const { cartList } = this.state;
+    const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
+    const data = await result.json();
+    this.setState({ cartList: [...cartList, data] });
+    console.log(id);
+  }
+
   render() {
     const { cartList } = this.state;
     return (
@@ -30,7 +38,7 @@ class App extends React.Component {
           <Route exact path="/cart" render={ () => <Cart productList={ cartList } /> } />
           <Route
             path="/details/:id"
-            render={ (props) => <DetailsProducts { ...props } /> }
+            render={ (props) => <DetailsProducts addCar={ this.addCar } { ...props } /> }
           />
         </Switch>
       </BrowserRouter>
