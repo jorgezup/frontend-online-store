@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { getSpecificItem } from './services/api';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
@@ -12,8 +11,7 @@ class App extends React.Component {
     cartList: [],
   }
 
-  handleButtonAddCart = async ({ target: { id } }) => {
-    const product = await getSpecificItem(id);
+  handleButtonAddCart = async (product) => {
     const { cartList } = this.state;
 
     const productExists = cartList.find((productItem) => productItem.id === product.id);
@@ -71,15 +69,6 @@ class App extends React.Component {
       totalPrice: 0,
     })
 
-  /* Removido essa função e utilizado a função  handleButtonAddCart */
-  // addCar = async ({ target: { id } }) => {
-  //   const { cartList } = this.state;
-  //   const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
-  //   const data = await result.json();
-  //   this.setState({ cartList: [...cartList, data] });
-  //   console.log(id);
-  // }
-
   render() {
     const { cartList } = this.state;
     return (
@@ -102,7 +91,7 @@ class App extends React.Component {
           <Route
             path="/details/:id"
             render={ (props) => (<DetailsProducts
-              addCar={ this.handleButtonAddCart }
+              handleButtonAddCart={ this.handleButtonAddCart }
               { ...props }
             />) }
           />
