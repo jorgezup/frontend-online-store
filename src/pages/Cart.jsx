@@ -18,7 +18,7 @@ class Cart extends Component {
               <h2 data-testid="shopping-cart-product-name">{ product.title }</h2>
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{ product.price }</p>
-              <span data-testid="shopping-cart-product-quantity">{product.amount}</span>
+              <p data-testid="shopping-cart-product-quantity">{product.amount}</p>
               <button
                 type="button"
                 value={ product.id }
