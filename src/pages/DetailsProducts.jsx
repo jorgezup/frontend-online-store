@@ -62,7 +62,6 @@ DetailsProducts.propTypes = {
     }),
   }).isRequired,
   handleButtonAddCart: PropTypes.func.isRequired,
-  cartSize: PropTypes.number.isRequired,
 };
 
 export default DetailsProducts;
