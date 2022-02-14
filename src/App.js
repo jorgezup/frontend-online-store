@@ -12,9 +12,51 @@ class App extends React.Component {
   }
 
   handleButtonAddCart = async ({ target: { id } }) => {
+    const product = await getSpecificItem(id);
     const { cartList } = this.state;
-    const result = await getSpecificItem(id);
-    this.setState({ cartList: [...cartList, result] });
+
+    const productExists = cartList.find((productItem) => productItem.id === product.id);
+
+    if (productExists) {
+      this.addProductToList(product);
+      return;
+    }
+
+    const newProduct = {
+      ...product,
+      amount: 1,
+    };
+
+    this.setState({
+      cartList: [...cartList, newProduct],
+    });
+  }
+
+  addProductToList = (product) => {
+    const { cartList } = this.state;
+    const updatedCart = [...cartList];
+    const productAdd = updatedCart.find((productItem) => productItem.id === product.id);
+    productAdd.amount += 1;
+
+    this.setState({
+      cartList: [...updatedCart],
+    });
+  }
+
+  removeProductFromCart = (product) => {
+    const { cartList } = this.state;
+    const updatedCart = [...cartList];
+    const productRemoved = updatedCart.findIndex((
+      productItem,
+    ) => productItem.id === product.id);
+
+    if (productRemoved >= 0) {
+      product.amount -= 1;
+      if (product.amount <= 0) {
+        updatedCart.splice(productRemoved, 1);
+      }
+      this.setState({ cartList: [...updatedCart] });
+    }
   }
 
   addCar = async ({ target: { id } }) => {
@@ -35,7 +77,15 @@ class App extends React.Component {
             path="/"
             render={ () => <Home handleButtonAddCart={ this.handleButtonAddCart } /> }
           />
-          <Route exact path="/cart" render={ () => <Cart productList={ cartList } /> } />
+          <Route
+            exact
+            path="/cart"
+            render={ () => (<Cart
+              productList={ cartList }
+              handleAddProduct={ this.addProductToList }
+              handleRemoveProduct={ this.removeProductFromCart }
+            />) }
+          />
           <Route
             path="/details/:id"
             render={ (props) => <DetailsProducts addCar={ this.addCar } { ...props } /> }
