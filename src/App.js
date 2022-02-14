@@ -1,18 +1,17 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { getSpecificItem } from './services/api';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
+import Checkout from './pages/Checkout';
 
 class App extends React.Component {
   state = {
     cartList: [],
   }
 
-  handleButtonAddCart = async ({ target: { id } }) => {
-    const product = await getSpecificItem(id);
+  handleButtonAddCart = async (product) => {
     const { cartList } = this.state;
 
     const productExists = cartList.find((productItem) => productItem.id === product.id);
@@ -59,13 +58,16 @@ class App extends React.Component {
     }
   }
 
-  addCar = async ({ target: { id } }) => {
-    const { cartList } = this.state;
-    const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
-    const data = await result.json();
-    this.setState({ cartList: [...cartList, data] });
-    console.log(id);
-  }
+  totalItemsAndTotalPrice = (listOfProductsInCart) => listOfProductsInCart
+    .reduce((acc, product) => {
+      acc.totalItems += 1;
+      acc.totalPrice += product.amount * product.price;
+      return acc;
+    },
+    {
+      totalItems: 0,
+      totalPrice: 0,
+    })
 
   render() {
     const { cartList } = this.state;
@@ -88,7 +90,17 @@ class App extends React.Component {
           />
           <Route
             path="/details/:id"
-            render={ (props) => <DetailsProducts addCar={ this.addCar } { ...props } /> }
+            render={ (props) => (<DetailsProducts
+              handleButtonAddCart={ this.handleButtonAddCart }
+              { ...props }
+            />) }
+          />
+          <Route
+            path="/checkout"
+            render={ () => (<Checkout
+              productList={ cartList }
+              totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
+            />) }
           />
         </Switch>
       </BrowserRouter>

@@ -2,24 +2,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import cart from '../icons/cart.svg';
+import { getSpecificItem } from '../services/api';
 
 class DetailsProducts extends React.Component {
     state = {
-      data: [],
+      product: [],
     }
 
     async componentDidMount() {
       const { match: { params: { id } } } = this.props;
-      const results = await fetch(`https://api.mercadolibre.com/items/${id}`);
-      const data = await results.json();
-      this.setState({ data });
+      const product = await getSpecificItem(id);
+      this.setState({ product });
     }
 
     render() {
-      const { match: { params: { id } } } = this.props;
-      const { addCar } = this.props;
-      const { data } = this.state;
-      const { attributes } = data;
+      const { handleButtonAddCart } = this.props;
+      const { product } = this.state;
+      const { id, title, price, thumbnail, attributes } = product;
       return (
         <section data-testid="product-detail-name">
           <div>
@@ -31,15 +30,15 @@ class DetailsProducts extends React.Component {
             </Link>
           </div>
           <div>
-            <h2>{ data.title }</h2>
-            <h3>{ data.price }</h3>
-            <img src={ data.thumbnail } alt={ data.title } />
+            <h2>{ title }</h2>
+            <h3>{ price }</h3>
+            <img src={ thumbnail } alt={ title } />
           </div>
           <button
             id={ id }
             type="button"
             data-testid="product-detail-add-to-cart"
-            onClick={ addCar }
+            onClick={ () => handleButtonAddCart(product) }
           >
             Adicionar ao Carrinho
           </button>
@@ -63,7 +62,7 @@ DetailsProducts.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }).isRequired,
-  addCar: PropTypes.func.isRequired,
+  handleButtonAddCart: PropTypes.func.isRequired,
 };
 
 export default DetailsProducts;
