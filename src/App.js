@@ -59,13 +59,14 @@ class App extends React.Component {
     }
   }
 
-  addCar = async ({ target: { id } }) => {
-    const { cartList } = this.state;
-    const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
-    const data = await result.json();
-    this.setState({ cartList: [...cartList, data] });
-    console.log(id);
-  }
+  /* Removido essa função e utilizado a função  handleButtonAddCart */
+  // addCar = async ({ target: { id } }) => {
+  //   const { cartList } = this.state;
+  //   const result = await fetch(`https://api.mercadolibre.com/items/${id}`);
+  //   const data = await result.json();
+  //   this.setState({ cartList: [...cartList, data] });
+  //   console.log(id);
+  // }
 
   render() {
     const { cartList } = this.state;
@@ -88,7 +89,10 @@ class App extends React.Component {
           />
           <Route
             path="/details/:id"
-            render={ (props) => <DetailsProducts addCar={ this.addCar } { ...props } /> }
+            render={ (props) => (<DetailsProducts
+              addCar={ this.handleButtonAddCart }
+              { ...props }
+            />) }
           />
         </Switch>
       </BrowserRouter>
