@@ -2,20 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Checkout extends Component {
-  totalItemsAndTotalPrice = (listOfProductsInCart) => listOfProductsInCart
-    .reduce((acc, product) => {
-      acc.totalItems += 1;
-      acc.totalPrice += product.amount * product.price;
-      return acc;
-    },
-    {
-      totalItems: 0,
-      totalPrice: 0,
-    })
-
   render() {
-    const { productList } = this.props;
-    const { totalItems, totalPrice } = this.totalItemsAndTotalPrice(productList);
+    const { productList, totalItemsAndTotalPrice } = this.props;
+    const { totalItems, totalPrice } = totalItemsAndTotalPrice(productList);
     return (
       <>
         <h2>Finalize sua compra</h2>
@@ -62,6 +51,7 @@ class Checkout extends Component {
 
 Checkout.propTypes = {
   productList: PropTypes.arrayOf(Object).isRequired,
+  totalItemsAndTotalPrice: PropTypes.func.isRequired,
 };
 
 export default Checkout;

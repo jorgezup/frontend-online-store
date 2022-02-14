@@ -60,6 +60,17 @@ class App extends React.Component {
     }
   }
 
+  totalItemsAndTotalPrice = (listOfProductsInCart) => listOfProductsInCart
+    .reduce((acc, product) => {
+      acc.totalItems += 1;
+      acc.totalPrice += product.amount * product.price;
+      return acc;
+    },
+    {
+      totalItems: 0,
+      totalPrice: 0,
+    })
+
   /* Removido essa função e utilizado a função  handleButtonAddCart */
   // addCar = async ({ target: { id } }) => {
   //   const { cartList } = this.state;
@@ -97,7 +108,10 @@ class App extends React.Component {
           />
           <Route
             path="/checkout"
-            render={ () => (<Checkout productList={ cartList } />) }
+            render={ () => (<Checkout
+              productList={ cartList }
+              totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
+            />) }
           />
         </Switch>
       </BrowserRouter>
