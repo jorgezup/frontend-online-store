@@ -5,11 +5,15 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
 import Checkout from './pages/Checkout';
+import { addReviews } from './services/localStorage';
 
 class App extends React.Component {
   state = {
     cartList: [],
     cartSize: 0,
+    email: '',
+    rate: '',
+    review: '',
   }
 
   componentDidMount() {
@@ -79,48 +83,82 @@ class App extends React.Component {
       totalPrice: 0,
     })
 
-  render() {
-    const { cartList, cartSize } = this.state;
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={ () => (<Home
-              cartSize={ cartSize }
-              handleButtonAddCart={ this.handleButtonAddCart }
-            />) }
-          />
-          <Route
-            exact
-            path="/cart"
-            render={ () => (<Cart
-              productList={ cartList }
-              handleAddProduct={ this.addProductToList }
-              handleRemoveProduct={ this.removeProductFromCart }
-            />) }
-          />
-          <Route
-            path="/details/:id"
-            render={ (props) => (<DetailsProducts
-              cartSize={ cartSize }
-              handleButtonAddCart={ this.handleButtonAddCart }
-              cartList={ cartList }
-              { ...props }
-            />) }
-          />
-          <Route
-            path="/checkout"
-            render={ () => (<Checkout
-              productList={ cartList }
-              totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
-            />) }
-          />
-        </Switch>
-      </BrowserRouter>
-    );
-  }
+    handleChange = ({ target }) => {
+      const value = (target.type === 'checkbox') ? target.checked : target.value;
+      this.setState({
+        [target.name]: value,
+      });
+    }
+
+    handleSubmitReview = (product) => {
+      const { email, rate, review } = this.state;
+
+      const newReview = {
+        email,
+        rate,
+        review,
+        productId: product.id,
+      };
+
+      addReviews(newReview);
+
+      this.resetForm();
+    }
+
+    resetForm = () => {
+      this.setState({
+        email: '',
+        rate: '',
+        review: '',
+      });
+    }
+
+    render() {
+      const { cartList, cartSize, email, rate, review } = this.state;
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={ () => (<Home
+                cartSize={ cartSize }
+                handleButtonAddCart={ this.handleButtonAddCart }
+              />) }
+            />
+            <Route
+              exact
+              path="/cart"
+              render={ () => (<Cart
+                productList={ cartList }
+                handleAddProduct={ this.addProductToList }
+                handleRemoveProduct={ this.removeProductFromCart }
+              />) }
+            />
+            <Route
+              path="/details/:id"
+              render={ (props) => (<DetailsProducts
+                cartSize={ cartSize }
+                handleButtonAddCart={ this.handleButtonAddCart }
+                email={ email }
+                rate={ rate }
+                review={ review }
+                handleSubmitReview={ this.handleSubmitReview }
+                handleChange={ this.handleChange }
+                { ...props }
+              />) }
+            />
+            <Route
+              path="/checkout"
+              render={ () => (<Checkout
+                productList={ cartList }
+                totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
+              />) }
+            />
+          </Switch>
+        </BrowserRouter>
+      );
+    }
 }
 
 export default App;
