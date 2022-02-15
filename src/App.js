@@ -83,50 +83,6 @@ class App extends React.Component {
       totalPrice: 0,
     })
 
-  /*
-  render() {
-    const { cartList, cartSize } = this.state;
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={ () => (<Home
-              cartSize={ cartSize }
-              handleButtonAddCart={ this.handleButtonAddCart }
-            />) }
-          />
-          <Route
-            exact
-            path="/cart"
-            render={ () => (<Cart
-              productList={ cartList }
-              handleAddProduct={ this.addProductToList }
-              handleRemoveProduct={ this.removeProductFromCart }
-            />) }
-          />
-          <Route
-            path="/details/:id"
-            render={ (props) => (<DetailsProducts
-              cartSize={ cartSize }
-              handleButtonAddCart={ this.handleButtonAddCart }
-              cartList={ cartList }
-              { ...props }
-            />) }
-          />
-          <Route
-            path="/checkout"
-            render={ () => (<Checkout
-              productList={ cartList }
-              totalItemsAndTotalPrice={ this.totalItemsAndTotalPrice }
-            />) }
-          />
-        </Switch>
-      </BrowserRouter>
-    );
-  } */
-
     handleChange = ({ target }) => {
       const value = (target.type === 'checkbox') ? target.checked : target.value;
       this.setState({
