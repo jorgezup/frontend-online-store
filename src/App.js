@@ -1,15 +1,15 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import DetailsProducts from './pages/DetailsProducts';
 import Checkout from './pages/Checkout';
+import { addReviews } from './services/localStorage';
 
 class App extends React.Component {
   state = {
     cartList: [],
-    productReview: [],
     email: '',
     rate: '',
     review: '',
@@ -73,8 +73,6 @@ class App extends React.Component {
       totalPrice: 0,
     })
 
-  /* Funções para o Details Product */
-
     handleChange = ({ target }) => {
       const value = (target.type === 'checkbox') ? target.checked : target.value;
       this.setState({
@@ -83,8 +81,7 @@ class App extends React.Component {
     }
 
     handleSubmitReview = (product) => {
-      const { productReview, email, rate, review } = this.state;
-      console.log(productReview, email, rate, review, product);
+      const { email, rate, review } = this.state;
 
       const newReview = {
         email,
@@ -93,15 +90,9 @@ class App extends React.Component {
         productId: product.id,
       };
 
-      console.log(newReview);
-
-      this.setState({
-        productReview: [...productReview, newReview],
-      });
+      addReviews(newReview);
 
       this.resetForm();
-
-      return <Redirect to="/" />;
     }
 
     resetForm = () => {
@@ -113,8 +104,7 @@ class App extends React.Component {
     }
 
     render() {
-      const { cartList, email, rate, review, productReview } = this.state;
-      console.log(productReview);
+      const { cartList, email, rate, review } = this.state;
       return (
         <BrowserRouter>
           <Switch>
@@ -141,7 +131,6 @@ class App extends React.Component {
                 review={ review }
                 handleSubmitReview={ this.handleSubmitReview }
                 handleChange={ this.handleChange }
-                productReview={ productReview }
                 { ...props }
               />) }
             />
